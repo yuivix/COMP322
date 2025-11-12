@@ -1,6 +1,3 @@
-import { NavigationContainer } from '@react-navigation/native'
-
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
 //import for our text
 import { StyleSheet, Text, View } from 'react-native'
 //import react, make a module called Component
@@ -27,7 +24,7 @@ class Screen2 extends Component {
   }
 }
 
-export default screen;
+export default Screen2;
 
 const styles = StyleSheet.create({
     container: {

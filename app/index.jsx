@@ -1,14 +1,7 @@
-import { NavigationContainer } from '@react-navigation/native'
-
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
 //import for our text
 import { StyleSheet, Text, View, StatusBar, Button, TouchableHighlight } from 'react-native'
 //import react, make a module called Component
 import React, {Component} from 'react'
-
-
-const Stack = createNativeStackNavigator();
-
 
 
 //This is our first basicApp
@@ -32,9 +25,20 @@ class Box1 extends Component{
   }
 }
 
-class Screen extends Component {
+class ButtonBox extends Component{
+  render() {
+    return (
+      <TouchableHighlight onPress={this.props.onPress}>
+        <View style = {styles.box}>
+          <Text style = {styles.boxWriting}> {this.props.label}</Text>
+        </View>
+      </TouchableHighlight>
+    );
+  }
+}
 
-  secondScreen  = () => {this.props.navigation.navigate("Pantry Pal")}
+
+class Screen extends Component {
     render() {
       return (
         <View style={styles.container}>
@@ -45,7 +49,10 @@ class Screen extends Component {
             <Box1 label = "Vegtable" />
             <Box1 label = "Fruit" />
             <Box1 label = "Meat" />
-            <Box1 label = "Start" />
+            <ButtonBox 
+            label = "Start" 
+            onPress={() => {this.props.navigation.navigate("MainPage")}}
+             />
             <Box1 label = "Cheese" />
             <Box1 label = "Spices" />
             <Box1 label = "Exotic Fruit" />
@@ -54,21 +61,6 @@ class Screen extends Component {
         </View>
         ); 
     }
-}
-
-
-
-class App extends Component {
-  render() {
-    return (
-      <NavigationContainer>
-        <Stack.Navigator>
-          <Stack.Screen name = "Pantry Pal" component= {Screen} />
-          <Stack.Screen name = "Shining above the Spire" component={Screen}/>
-        </Stack.Navigator>
-      </NavigationContainer>
-    ); 
-  }
 }
 
 export default Screen;
@@ -101,17 +93,18 @@ const styles = StyleSheet.create({
           paddingTop: 20,
           paddingBottom: 250,
         },
-        box:{
+        box: {
           height: '50%',
           width: '30%',
-          backgroundColor: '#0000FF',
-          opacity: '10%',
+          backgroundColor: '#F5F5DC',
+          opacity: '100%',
           marginBottom: '3%',
 
         },
         boxWriting: {
           fontSize: 18,
           color: '#080808',
+          textAlign: 'center'
         }
          
 });
