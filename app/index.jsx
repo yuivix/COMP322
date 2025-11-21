@@ -1,5 +1,5 @@
 //import for our text
-import { StyleSheet, Text, View, StatusBar, Button, TouchableHighlight } from 'react-native'
+import { StyleSheet, Text, View, StatusBar, Button, TouchableHighlight, ImageBackground } from 'react-native'
 //import react, make a module called Component
 import React, {Component} from 'react'
 
@@ -28,14 +28,13 @@ class Box1 extends Component{
 class ButtonBox extends Component{
   render() {
     return (
-      <TouchableHighlight onPress={this.props.onPress}>
-        <View style = {styles.box}>
-          <Text style = {styles.boxWriting}> {this.props.label}</Text>
-        </View>
+      <TouchableHighlight onPress={this.props.onPress} style={styles.box} underlayColor="#e6e6c9">
+        <Text style={styles.boxWriting}>{this.props.label}</Text>
       </TouchableHighlight>
     );
   }
 }
+
 
 
 class Screen extends Component {
@@ -74,9 +73,10 @@ const styles = StyleSheet.create({
             backgroundColor: '#fcfcfc'
         },
         header: {
-            height: '20%',
+            height: '10%',
+            alignItems: 'center',
+            justifyContent: 'center',
             backgroundColor: '#c0d698',
-            padding: 50
         },
         heading: {
             color: '#080808',
@@ -88,17 +88,20 @@ const styles = StyleSheet.create({
           flexDirection: 'row',
           flexWrap: 'wrap',
           justifyContent: 'space-between',
-          paddingLeft: 300,
-          paddingRight: 300,
-          paddingTop: 20,
+          paddingLeft: 20,
+          paddingRight: 20,
+          paddingTop: 30,
           paddingBottom: 250,
         },
         box: {
-          height: '50%',
+          height: '45%',
           width: '30%',
           backgroundColor: '#F5F5DC',
-          opacity: '100%',
-          marginBottom: '3%',
+          opacity: .9,
+          marginBottom: '5%',
+          borderRadius: 10,
+          justifyContent: 'center',
+          alignItems: 'center',
 
         },
         boxWriting: {
