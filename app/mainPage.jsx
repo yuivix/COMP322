@@ -47,7 +47,6 @@ class MainPage extends Component {
 
   fetchMealsByCategory = async (category) => {
     const url = `https://www.themealdb.com/api/json/v1/1/filter.php?c=${category}`;
-
     const res = await fetch(url);
     const data = await res.json();
 
@@ -111,7 +110,7 @@ class MainPage extends Component {
         {/* recipe modal */}
         <Modal visible={this.state.modalVisible} transparent={true} animationType="slide">
           <ScrollView
-            style={{ flex: 1, backgroundColor: '#ffffff', marginTop: 70 }}
+            style={{ flex: 1, backgroundColor: '#ffffff', paddingTop: 70 }}
             contentContainerStyle={{ paddingBottom: 30 }}
           >
             <Image
