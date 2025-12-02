@@ -24,6 +24,7 @@
   },
   "private": true,
   "devDependencies": {
-    "babel-preset-expo": "^54.0.7"
+    "babel-preset-expo": "^54.0.7",
+    "baseline-browser-mapping": "^2.8.32"
   }
 }

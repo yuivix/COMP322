@@ -1,4 +1,4 @@
-import { ScrollView, View, Text, StyleSheet, TouchableOpacity, Pressable, Image, Dimensions, Modal, Button } from 'react-native';
+import { ScrollView, View, Text, StyleSheet, TouchableOpacity, Pressable, Image, Dimensions, Modal } from 'react-native';
 import React, { Component } from 'react';
 
 class MainPage extends Component {
@@ -6,93 +6,142 @@ class MainPage extends Component {
   state = {
     modalVisible: false,
     selectedRecipe: null,
-  };
-
-  openRecipe = (recipe) => {
-    this.setState({ selectedRecipe: recipe, modalVisible: true });
+    recipes: [],
+    selectedCategory: null,
   };
 
   closeModal = () => {
     this.setState({ modalVisible: false, selectedRecipe: null });
   }
 
+  fetchRecipeDetails = async (idMeal) => {
+    const res = await fetch(
+        `https://www.themealdb.com/api/json/v1/1/lookup.php?i=${idMeal}`
+      );
+
+      const data = await res.json();
+  
+      if (data.meals && data.meals.length > 0) {
+        const recipe = data.meals[0];
+        const ingredients = [];
+
+        for (let i = 1; i <= 20; i++) {
+          const ingredient = recipe[`strIngredient${i}`];
+          const measure = recipe[`strMeasure${i}`];
+          
+          if (ingredient && ingredient.trim() !== "") {
+            ingredients.push(`${measure} ${ingredient}`.trim());
+          }
+        }
+  
+        this.setState({
+          selectedRecipe: {
+            title: recipe.strMeal,
+            image: recipe.strMealThumb,
+            instructions: recipe.strInstructions, ingredients,
+          },
+          modalVisible: true,
+        });
+      }  
+    };  
+
+  fetchMealsByCategory = async (category) => {
+    const url = `https://www.themealdb.com/api/json/v1/1/filter.php?c=${category}`;
+
+    const res = await fetch(url);
+    const data = await res.json();
+
+    this.setState({
+      recipes: data.meals || [],
+      selectedCategory: category,
+    });
+  };
+
   render() {
     const categories = [
-      "Pasta", "Vegan", "Protein","Vegatarian", "Soups", "Dessert",
+      "Pasta", "Vegan", "Beef", "Chicken", "Vegetarian", "Seafood", "Dessert",
     ];
 
-    const recipes = [
-      { id: 1, title: 'Spaghetti Carbonara', image: 'https://www.themealdb.com/images/media/meals/llcbn01574260722.jpg' },
-      { id: 2, title: 'Shakshouka', image: 'https://www.themealdb.com/images/media/meals/crd1jz1763592990.jpg' },
-      { id: 3, title: 'Creamy Tomato Soup', image: 'https://www.themealdb.com/images/media/meals/stpuws1511191310.jpg' },
-      { id: 4, title: 'Chocolate Cake', image: 'https://www.themealdb.com/images/media/meals/tqtywx1468317395.jpg' },
-      { id: 5, title: 'Grilled Chicken', image: 'https://www.themealdb.com/images/media/meals/wvpsxx1468256321.jpg' },
-      { id: 6, title: 'Vegetable Stir Fry', image: 'https://www.themealdb.com/images/media/meals/wqurxy1511453156.jpg' },
-      { id: 7, title: 'Beef Tacos', image: 'https://www.themealdb.com/images/media/meals/qtuwxu1468233098.jpg' },
-      { id: 8, title: 'Pancakes', image: 'https://www.themealdb.com/images/media/meals/rwuyqx1511383174.jpg' },
-    ];
+    const { recipes } = this.state;
 
     return (
       <View style={styles.container}>
-        { /* Category Scroll */ }
-        <ScrollView
+        <Text style={styles.headerText}>
+          What <Text style={{ color: '#c0d698' }}>recipe</Text> shall we make today?
+        </Text>
+
+         {/* category scroll */}
+         <ScrollView
           horizontal={true}
           showsHorizontalScrollIndicator={false}
           style={styles.categoryScroll}
           contentContainerStyle={{ paddingHorizontal: 10 }}
         >
           {categories.map((cat, index) => (
-            <TouchableOpacity key={index} style={styles.categoryBox}>
+            <TouchableOpacity
+              key={index}
+              style={styles.categoryBox}
+              onPress={() => this.fetchMealsByCategory(cat)}
+            >
               <Text style={styles.categoryText}>{cat}</Text>
             </TouchableOpacity>
           ))}
         </ScrollView>
 
-        { /* Recipe Cards */ }
+        {/* recipe cards */}
         <ScrollView contentContainerStyle={{ padding: 10 }}>
           <View style={styles.recipeGrid}>
             {recipes.map((recipe) => (
-              <View key={recipe.id} style={styles.recipeWrapper}>
-                <Pressable style={styles.recipeCard} onPress={() => this.openRecipe(recipe)}>
-                  <Image source={{ uri: recipe.image }} style={styles.recipeImage} />
+              <View key={recipe.idMeal} style={styles.recipeWrapper}>
+                <Pressable
+                  style={styles.recipeCard}
+                  onPress={() => this.fetchRecipeDetails(recipe.idMeal)}
+                >
+                  <Image
+                    source={{ uri: recipe.strMealThumb }}
+                    style={styles.recipeImage}
+                  />
                 </Pressable>
-              <Text style={styles.recipeTitle}>{recipe.title}</Text>
-            </View>
+                <Text style={styles.recipeTitle}>{recipe.strMeal}</Text>
+              </View>
             ))}
           </View>
         </ScrollView>
 
-        { /* Recipe Modal */ }
-        <Modal
-          visible={this.state.modalVisible}
-          transparent={true}
-          animationType="slide"
+        {/* recipe modal */}
+        <Modal visible={this.state.modalVisible} transparent={true} animationType="slide">
+          <ScrollView
+            style={{ flex: 1, backgroundColor: '#ffffff', marginTop: 70 }}
+            contentContainerStyle={{ paddingBottom: 30 }}
           >
-            <View style={styles.modalContainer}>
-            <Image 
+            <Image
               source={{ uri: this.state.selectedRecipe?.image }}
-              style={styles.modalImage}
-            />
+              style={{ width: '100%', height: 300, resizeMode: 'cover' }}
+              />
+              
+            <View style={{ width: '100%', paddingHorizontal: 20 }}>
+              <Text style={styles.modalTitle}>{this.state.selectedRecipe?.title}</Text>
 
-            <Text style={styles.modalTitle}>
-              {this.state.selectedRecipe?.title}
-            </Text>
+              <Text style={styles.modalSubtitle}>Ingredients:</Text>
+              {this.state.selectedRecipe?.ingredients.map((item, index) => (
+                <Text key={index} style={styles.modalText}>• {item}</Text>
+              ))}
 
-            <TouchableOpacity 
-              onPress={this.closeModal} 
-              style={styles.closeButton}
-            >
-              <Text style={styles.closeText}>Close</Text>
-            </TouchableOpacity>
-          </View>
-          </Modal>
-          <TouchableOpacity 
+              <Text style={styles.modalSubtitle}>Instructions:</Text>
+              <Text style={styles.modalText}>{this.state.selectedRecipe?.instructions}</Text>
+
+              <TouchableOpacity onPress={this.closeModal} style={[styles.closeButton]}>
+                <Text style={styles.closeText}>Close</Text>
+              </TouchableOpacity>
+            </View>
+          </ScrollView>
+        </Modal>
+        <TouchableOpacity 
           style = {styles.colorButton}
           onPress={() => {this.props.navigation.navigate("ProfilePage")}} >
             <Text>Profile</Text>
           </TouchableOpacity>
-        </View>
-        
+      </View>
     );
   }
 }
@@ -100,23 +149,38 @@ class MainPage extends Component {
 export default MainPage;
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#fcfcfc' },
-  categoryScroll: { marginTop: 12, maxHeight: 90, marginBottom: 10 },
+  container: { 
+    flex: 1, 
+    backgroundColor: '#fcfcfc' },
+
+  headerText: { 
+    fontSize: 24, 
+    fontWeight: '700', 
+    marginTop: 15, 
+    marginBottom: 5, 
+    paddingHorizontal: 20, 
+    color: '#525151' },
+
+  categoryScroll: { 
+    marginTop: 12, 
+    maxHeight: 90, 
+    marginBottom: 10 },
+
   categoryBox: {
     backgroundColor: '#c0d698',
-    borderRadius: 15,
+    borderRadius: 25,
     height: 50,
     paddingHorizontal: 20,
-    marginBottom: 10,
+    marginBottom: 17,
     marginRight: 10,
     justifyContent: 'center',
     alignItems: 'center',
   },
-  categoryText: { fontSize: 16, color: '#080808', fontWeight: '600' },
-
-  recipeList: { 
-    padding: 10,
-  },
+  
+  categoryText: { 
+    fontSize: 16, 
+    color: '#525151', 
+    fontWeight: '600' },
 
   recipeGrid: {
     flexDirection: 'row',
@@ -151,19 +215,6 @@ const styles = StyleSheet.create({
     fontWeight: '200',
   },
 
-  modalContainer: {
-    flex: 1,
-    backgroundColor: '#ffffff',
-    marginTop: 70,
-    alignItems: 'center',
-    },
-
-  modalImage: {
-    width: '100%',
-    height: 300,
-    resizeMode: 'cover',
-    },
-
   modalTitle: {
     fontSize: 26,
     fontWeight: '700',
@@ -177,6 +228,7 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     paddingHorizontal: 20,
     backgroundColor: '#c0d698',
+    alignSelf: 'center',
     borderRadius: 12,
     },
   
@@ -186,9 +238,22 @@ const styles = StyleSheet.create({
     color: '#000',
     },
 
-   colorButton: {
-    colorButton: 'blue',
-    alignItems: 'center',
-    height: 25
+    modalSubtitle: {
+      fontSize: 18,
+      fontWeight: "600",
+      marginTop: 15,
+      marginBottom: 5,
     },
+
+    modalText: {
+      fontSize: 14,
+      marginBottom: 5,
+      lineHeight: 20,
+    },    
+    colorButton: {
+      colorButton: 'blue',
+      alignItems: 'center',
+      height: 25
+      },
 });
+

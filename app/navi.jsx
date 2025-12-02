@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { NavigationContainer } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
-import Screen from './index'
+import Screen from './frontPage'
 import MainPage from './mainPage'
 import ProfileScreen from './profileScreen'
 
