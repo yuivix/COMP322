@@ -137,7 +137,7 @@ class MainPage extends Component {
           </ScrollView>
         </Modal>
         <TouchableOpacity 
-          style = {styles.colorButton}
+          style = {styles.posButton}
           onPress={() => {this.props.navigation.navigate("ProfilePage")}} >
             <Text>Profile</Text>
           </TouchableOpacity>
@@ -250,8 +250,7 @@ const styles = StyleSheet.create({
       marginBottom: 5,
       lineHeight: 20,
     },    
-    colorButton: {
-      colorButton: 'blue',
+    posButton: {
       alignItems: 'center',
       height: 25
       },
