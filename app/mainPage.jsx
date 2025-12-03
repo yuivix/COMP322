@@ -135,6 +135,10 @@ class MainPage extends Component {
             </View>
           </ScrollView>
         </Modal>
+        <TouchableOpacity style = {styles.closeButton} 
+        onPress={() => {this.props.navigation.navigate("ProfilePage")}} >
+            <Text>Profile</Text>
+          </TouchableOpacity>
       </View>
     );
   }
@@ -165,7 +169,7 @@ const styles = StyleSheet.create({
     borderRadius: 25,
     height: 50,
     paddingHorizontal: 20,
-    marginBottom: 17,
+    marginBottom: 22,
     marginRight: 10,
     justifyContent: 'center',
     alignItems: 'center',
@@ -218,7 +222,8 @@ const styles = StyleSheet.create({
     },
   
   closeButton: {
-    marginTop: 25,
+    marginTop: 15,
+    marginBottom: 7,
     paddingVertical: 10,
     paddingHorizontal: 20,
     backgroundColor: '#c0d698',
@@ -232,18 +237,23 @@ const styles = StyleSheet.create({
     color: '#000',
     },
 
-    modalSubtitle: {
-      fontSize: 18,
-      fontWeight: "600",
-      marginTop: 15,
-      marginBottom: 5,
+  modalSubtitle: {
+    fontSize: 18,
+    fontWeight: "600",
+    marginTop: 15,      
+    marginBottom: 5,
     },
 
-    modalText: {
-      fontSize: 14,
-      marginBottom: 5,
-      lineHeight: 20,
-    },    
+  modalText: {
+    fontSize: 14,      
+    marginBottom: 5,
+    lineHeight: 20,
+    }, 
+
+  posButton: {
+    alignItems: 'center',
+    height: 25
+    },   
 });
 
 
