@@ -47,6 +47,7 @@ class MainPage extends Component {
 
   fetchMealsByCategory = async (category) => {
     const url = `https://www.themealdb.com/api/json/v1/1/filter.php?c=${category}`;
+
     const res = await fetch(url);
     const data = await res.json();
 
@@ -110,7 +111,7 @@ class MainPage extends Component {
         {/* recipe modal */}
         <Modal visible={this.state.modalVisible} transparent={true} animationType="slide">
           <ScrollView
-            style={{ flex: 1, backgroundColor: '#ffffff', paddingTop: 70 }}
+            style={{ flex: 1, backgroundColor: '#ffffff', marginTop: 70 }}
             contentContainerStyle={{ paddingBottom: 30 }}
           >
             <Image
@@ -135,8 +136,9 @@ class MainPage extends Component {
             </View>
           </ScrollView>
         </Modal>
-        <TouchableOpacity style = {styles.closeButton} 
-        onPress={() => {this.props.navigation.navigate("ProfilePage")}} >
+        <TouchableOpacity 
+          style = {styles.posButton}
+          onPress={() => {this.props.navigation.navigate("ProfilePage")}} >
             <Text>Profile</Text>
           </TouchableOpacity>
       </View>
@@ -169,7 +171,7 @@ const styles = StyleSheet.create({
     borderRadius: 25,
     height: 50,
     paddingHorizontal: 20,
-    marginBottom: 22,
+    marginBottom: 17,
     marginRight: 10,
     justifyContent: 'center',
     alignItems: 'center',
@@ -222,8 +224,7 @@ const styles = StyleSheet.create({
     },
   
   closeButton: {
-    marginTop: 15,
-    marginBottom: 7,
+    marginTop: 25,
     paddingVertical: 10,
     paddingHorizontal: 20,
     backgroundColor: '#c0d698',
@@ -237,23 +238,21 @@ const styles = StyleSheet.create({
     color: '#000',
     },
 
-  modalSubtitle: {
-    fontSize: 18,
-    fontWeight: "600",
-    marginTop: 15,      
-    marginBottom: 5,
+    modalSubtitle: {
+      fontSize: 18,
+      fontWeight: "600",
+      marginTop: 15,
+      marginBottom: 5,
     },
 
-  modalText: {
-    fontSize: 14,      
-    marginBottom: 5,
-    lineHeight: 20,
-    }, 
-
-  posButton: {
-    alignItems: 'center',
-    height: 25
-    },   
+    modalText: {
+      fontSize: 14,
+      marginBottom: 5,
+      lineHeight: 20,
+    },    
+    posButton: {
+      alignItems: 'center',
+      height: 25
+      },
 });
-
 
