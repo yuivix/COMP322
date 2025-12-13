@@ -180,7 +180,7 @@ const styles = StyleSheet.create({
   categoryText: { 
     fontSize: 16, 
     color: '#525151', 
-    fontWeight: '600' },
+    fontFamily: 'system-ui' },
 
   recipeGrid: {
     flexDirection: 'row',
