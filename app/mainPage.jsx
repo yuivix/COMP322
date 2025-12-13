@@ -180,7 +180,8 @@ const styles = StyleSheet.create({
   categoryText: { 
     fontSize: 16, 
     color: '#525151', 
-    fontFamily: 'system-ui' },
+    fontFamily: 'system-ui',
+  },
 
   recipeGrid: {
     flexDirection: 'row',
@@ -212,7 +213,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: '#080808',
     textAlign: 'center',
-    fontWeight: '200',
+    fontFamily: 'system-ui',
   },
 
   modalTitle: {
@@ -240,7 +241,7 @@ const styles = StyleSheet.create({
 
     modalSubtitle: {
       fontSize: 18,
-      fontWeight: "600",
+      fontFamily: 'system-ui',
       marginTop: 15,
       marginBottom: 5,
     },
